@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --lavender: 250, 92%, 85%;
+  --lavender-dark: 250, 92%, 75%;
+  --mint: 165, 55%, 87%;
+  --peach: 15, 85%, 90%;
+  --background: 260, 25%, 98%;
+}
+
+@layer base {
+  body {
+    @apply bg-[hsl(var(--background))];
+  }
+}
+
+body {
+  @apply mt-16; /* Ajoute une marge de 1rem (16px) en haut */
+}
