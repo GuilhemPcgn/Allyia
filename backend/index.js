@@ -1,16 +1,22 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import mainRouter from "./router/mainRouter.js";
 
 dotenv.config();
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
+//middlewares
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.use(mainRouter);
+
+//erreur middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: "Une erreur est survenue !" });
 });
 
 // Gestion des erreurs 404 (Route inexistante)

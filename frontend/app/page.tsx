@@ -10,9 +10,9 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    // Simulate loading
+    // simulate loading
     setTimeout(() => setIsLoading(false), 1000);
-    // In a real app, you'd fetch the user's name here
+    // simulate username
     setUsername("Sophie");
   }, []);
 
@@ -43,7 +43,6 @@ export default function Home() {
   return (
     <main className="min-h-screen p-4 sm:p-6 md:p-8 max-w-4xl mx-auto">
       <div className="space-y-8">
-        {/* Greeting Section */}
         <div className="text-center space-y-4 mb-12">
           <div className="relative w-24 h-24 mx-auto mb-6">
             <div className="absolute inset-0 bg-[hsl(var(--lavender))] rounded-full animate-pulse"></div>
@@ -64,7 +63,6 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Features Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {features.map((feature) => (
             <button
