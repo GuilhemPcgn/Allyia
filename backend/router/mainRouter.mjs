@@ -1,11 +1,9 @@
 import express from 'express';
-import drugController from '../controllers/drugController.js';
-import medicamentController from '../controllers/medicamentController.js';
-import ordinanceController from '../controllers/ordinanceController.js';
-import pharmacieController from '../controllers/pharmacieController.js';
-import userController from '../controllers/userController.js';
+import drugController from '../controllers/drugController.mjs';
+import ordinanceController from '../controllers/ordinanceController.mjs';
+import pharmacieController from '../controllers/pharmacieController.mjs';
+import userController from '../controllers/userController.mjs';
 const router = express.Router();
-const { body } = require('express-validator');
 const { query } = require('express-validator');
 
 
@@ -14,14 +12,9 @@ router.get ('/', drugController.getAllDrugs);
 router.get('/id', drugController.getDrugsById);
 router.get('intakes/:userId', drugController.getUserDrugIntakes);
 
-// Medicaments
-router.get('/', medicamentController.getAllMedicaments);
-router.get('/search', medicamentController.searchMedicaments);
-router.get('/:id', medicamentController.getMedicamentById);
-
 // Ordinances
 router.get('/user/:userId', ordinanceController.getOrdinances);
-router.get('/:id', ordinanceController.getOrdinanceWithPrescription);
+router.get('/:id', ordinanceController.getOrdinanceWithPrescrption);
 
 // Pharmacies
 router.get('/', [

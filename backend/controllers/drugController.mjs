@@ -1,18 +1,19 @@
-import { mockDrugs, mockDrugIntakes } from '../data/mockData';
+import { mockDrugs, mockDrugIntakes } from '../data/mockData.js';
 
-exports.getAllDrugs = (req, res) => {
+const drugController = {
+getAllDrugs: (req, res) => {
     res.json(mockDrugs);
-};
+},
 
-exports.getDrugById = (req, res) => {
+getDrugsById: (req, res) => {
     const drug = mockDrugIntakes.find(d => d.drug_id === parseInt(req.params.id));
     if (!drug) {
         return res.status(404).json({ message: "Médicament non trouvé" });
     }
     res.json(drug);
-}
+},
 
-exports.getUserDrugIntakes = (req, res) => {
+getUserDrugIntakes: (req, res) => {
     const userIntakes = mockDrugIntakes.filter (
         di => di.user_id === parseInt(req.params.userId)
     );
@@ -23,4 +24,7 @@ exports.getUserDrugIntakes = (req, res) => {
     }));
 
     res.json(intakesWithDetails);
+},
 };
+
+export default drugController

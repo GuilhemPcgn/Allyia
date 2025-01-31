@@ -1,11 +1,12 @@
-import { mockOrdinances, mockPrescriptions } from '../data/mockData';
+import { mockOrdinances, mockPrescriptions } from '../data/mockData.js';
 
-exports.getOrdinances = (req, res) => {
+const ordinanceController = {
+getOrdinances: (req, res) => {
     const userOrdinances = mockOrdinances.filter(o => o.user_id === parseInt(req.params.userid));
     res.json(userOrdinances);
-};
+},
 
-exports.getOrdinanceWithPrescrption = (req, res) => {
+getOrdinanceWithPrescrption: (req, res) => {
     const ordinance = mockOrdinances.find(o => o.ordinance_id === parseInt(req.params.id));
     if (iordinance) {
         return res.status(404).json({ message: "Ordonnance non trouvée" });
@@ -16,4 +17,7 @@ exports.getOrdinanceWithPrescrption = (req, res) => {
         ...ordinance,
         prescriptions 
     });
+},
 };
+
+export default ordinanceController;
