@@ -212,7 +212,7 @@ export default function Medicaments() {
 
                             <div className="grid md:grid-cols-2 gap-6">
                                 <Card className="p-0 overflow-hidden">
-                                    <LoadScript googleMapsApiKey="AIzaSyAoLLyhZKt5uQGJ6xaXQ7paBxdpE_El_pY">
+                                    <LoadScript googleMapsApiKey="">
                                         <GoogleMap
                                             mapContainerStyle={mapContainerStyle}
                                             center={center}
