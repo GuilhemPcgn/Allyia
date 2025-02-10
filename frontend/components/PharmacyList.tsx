@@ -1,5 +1,29 @@
 'use client';
 
+interface Review {
+    id: string;
+    author: string;
+    rating: number;
+    date: string;
+    comment: string;
+}
+
+interface Hours {
+    open?: string;
+    close?: string;
+}
+
+interface Pharmacy {
+    id: string;
+    name: string;
+    address: string;
+    distance: string;
+    rating: number;
+    reviewCount: number;
+    isOpen: boolean;
+    hours: { [key: string]: Hours };
+    reviews: Review[];
+}
 
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,8 +34,8 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
-
-function StarRating({ rating }) {
+export default function PharmacyList({ pharmacies }: { pharmacies: Pharmacy[] }) {
+function StarRating({ rating }: { rating: number }) {
     return (
         <div className="flex items-center gap-1">
             <div className="flex">
@@ -29,15 +53,14 @@ function StarRating({ rating }) {
     );
 }
 
-function formatHours(hours) {
+function formatHours(hours: Hours) {
     if (!hours || !hours.open || !hours.close) return "Fermé";
     return `${hours.open} - ${hours.close}`;
 }
 
-export default function PharmacyList({ pharmacies }) {
-    const days = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"];
+const days = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"];
 
-    return (
+return (
         <div className="space-y-4 h-[400px] overflow-y-auto pr-2">
             {pharmacies.map((pharmacy) => (
                 <Accordion type="single" collapsible key={pharmacy.id}>
@@ -72,7 +95,7 @@ export default function PharmacyList({ pharmacies }) {
                                         <div>
                                             <h4 className="font-medium text-gray-800 mb-2 flex items-center gap-2">
                                                 <Clock className="w-4 h-4" />
-                                                Horaires d'ouverture
+                                                Horaires d ouverture
                                             </h4>
                                             <div className="grid grid-cols-2 gap-2">
                                                 {days.map((day) => (
