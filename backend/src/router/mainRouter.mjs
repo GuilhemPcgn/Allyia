@@ -1,10 +1,7 @@
-// import express from 'express';
-// import drugController from '../controllers/drugController.mjs';
-// import ordinanceController from '../controllers/ordinanceController.mjs';
-// import pharmacieController from '../controllers/pharmacieController.mjs';
-// import userController from '../controllers/userController.mjs';
-// const router = express.Router();
-// const { query } = require('express-validator');
+import express from 'express';
+
+
+const router = express.Router();
 
 
 // // Drugs
@@ -31,6 +28,6 @@
 
 
 
-// export default router;
+export default router;
 
 

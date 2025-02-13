@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import mainRouter from "./router/mainRouter.mjs";
+import mainRouter from "./src/router/mainRouter.mjs";
+import sequelize from "./src/database.js";
 
 dotenv.config();
 const app = express();
@@ -30,3 +31,4 @@ app.use((req, res, next) => {
 app.listen(port, () => {
   console.log(`Serveur lancé sur http://localhost:${port}`);
 });
+

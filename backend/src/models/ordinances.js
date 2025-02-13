@@ -1,4 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
+import sequelize from '../database.js';
+import users from './Users.js';
+import prescription from './prescription.js';
 
 class ordinances extends Model {}
 
@@ -35,6 +38,6 @@ ordinances.init(
     });
 
     ordinances.belongsTo(users, { foreignKey: 'user_id' });
-    ordinances.hasmany(users, { foreignKey: 'user_id' });
+    ordinances.hasMany(prescription, { foreignKey: 'ordinance_id' });
 
 export default ordinances;

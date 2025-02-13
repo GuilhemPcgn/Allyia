@@ -1,4 +1,8 @@
 import { Model, DataTypes } from 'sequelize';
+import sequelize from '../database.js';
+import  ordinance from './ordinances.js';
+import drug_intake from './drug_intake.js';
+import authentification from './authentification.js';
 
 class users extends Model {}
 
@@ -47,7 +51,7 @@ users.init(
     }, {
         sequelize,
         timestamps: false,
-        tableName: 'Users',
+        tableName: 'users',
     });
 
 users.hasMany(ordinance, { foreignKey: 'user_id' });
