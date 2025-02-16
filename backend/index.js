@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mainRouter from "./src/router/mainRouter.mjs";
-import sequelize from "./src/database.js";
+import sequelize from "./src/config/database.js";
 
 dotenv.config();
 const app = express();
