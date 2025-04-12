@@ -12,15 +12,6 @@ import Dock from "@/components/Dock";
 import MedicamentCard from "@/components/MedicamentCard";
 import PharmacyList from "@/components/PharmacyList";
 
-interface Medicament {
-    id: number;
-    name: string;
-    dosage: string;
-    frequency: string;
-    nextPrescription: string;
-    nextIntake: string;
-    sideEffects: string[];
-}
 
 const mapContainerStyle = {
     width: "100%",

@@ -3,22 +3,6 @@
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
 
-interface Medicament {
-    id: number;
-    name: string;
-    dosage: string;
-    frequency: string;
-    nextPrescription: string;
-    nextIntake: string;
-    sideEffects: string[];
-}
-
-interface MedicamentCardProps {
-    medicament: Medicament;
-    onUpdate?: (updatedMedicament: Medicament) => void;
-    onDelete?: (id: number) => void;
-    initialFlip?: boolean;
-}
 
 export default function MedicamentCard({
     medicament,

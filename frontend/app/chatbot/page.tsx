@@ -1,10 +1,12 @@
 import { BreathingBubble } from '@/components/BreathingBubble';
 import { WeeklyChats } from '@/components/WeeklyChats';
 import Link from 'next/link';
+import Dock from "@/components/Dock";
 
 export default function ChatPage() {
     return (
         <main className="min-h-screen bg-gradient-to-b from-blue-50 to-white p-8">
+            <Dock />
             <div className="max-w-2xl mx-auto pt-12">
                 <h1 className="text-3xl font-bold text-center text-gray-800 mb-12">Votre espace d'écoute</h1>
 
