@@ -1,7 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
-import prescription from './prescription.js';
-import drug_intake from './drug_intake.js';
+
 
 
 class drugs extends Model {}
@@ -31,7 +30,6 @@ drugs.init(
         tableName: 'drugs',
     });
 
-drugs.hasMany(prescription, { foreignKey: 'drug_id' });
-drugs.hasMany(drug_intake, { foreignKey: 'drug_id' });
+
 
 export default drugs;

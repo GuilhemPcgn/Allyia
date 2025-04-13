@@ -1,13 +1,19 @@
 import { Model, DataTypes } from 'sequelize';
+import bcrypt from 'bcrypt';
 import sequelize from '../config/database.js';
-import  ordinance from './ordinances.js';
-import drug_intake from './drug_intake.js';
-import authentification from './authentification.js';
 
-class users extends Model {}
 
-users.init(
-    {
+class User extends Model {
+    static async hashPassword(password) {
+        return bcrypt.hash(password, 12);
+    }
+
+    async verifyPassword(password) {
+        return bcrypt.compare(password, this.password_hash);
+    }
+}
+
+User.init({
         user_id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -49,13 +55,22 @@ users.init(
             defaultValue: DataTypes.NOW,
         },
     }, {
-        sequelize,
-        timestamps: false,
-        tableName: 'users',
-    });
+    sequelize,
+    modelName: 'User',
+    tableName: 'users',
+    timestamps: false,
+    hooks: {
+        beforeCreate: async (user) => {
+            if (user.changed('password_hash')) {
+                user.password_hash = await User.hashPassword(user.password_hash);
+            }
+        },
+        beforeUpdate: async (user) => {
+            if (user.changed('password_hash')) {
+                user.password_hash = await User.hashPassword(user.password_hash);
+            }
+        }
+    }
+});
 
-users.hasMany(ordinance, { foreignKey: 'user_id' });
-users.hasMany(drug_intake, { foreignKey: 'user_id' });
-users.hasMany(authentification, { foreignKey: 'user_id' });
-
-export default users;
+export default User;

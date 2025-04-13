@@ -1,12 +1,11 @@
 import { Sequelize } from 'sequelize';
-import * as dotenv from 'dotenv';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
 const sequelize = new Sequelize(process.env.PG_URL, {
-    define: {
-        underscored: true,
-    }
+    dialect: 'postgres',
+    logging: false
 });
 
 // Test de la connexion a la DB

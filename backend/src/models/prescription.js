@@ -1,7 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
-import ordinances from './ordinances.js';
-import drugs from './drugs.js';
 
 class prescription extends Model {}
 
@@ -34,7 +32,6 @@ prescription.init(
         tableName: 'prescription'
     });
 
-    prescription.belongsTo(ordinances, { foreignKey: 'ordinance_id' });
-    prescription.belongsTo(drugs, { foreignKey: 'drug_id' });
+
 
     export default prescription;

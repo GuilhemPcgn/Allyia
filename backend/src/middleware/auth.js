@@ -1,4 +1,4 @@
-import { verifyAccessToken } from '../config/jwt.js';
+import { verifyRefreshToken } from '../config/jwt.js';
 import users from '../models/users.js';
 
 export const authenticateToken = (req, res, next) => {
@@ -10,7 +10,7 @@ export const authenticateToken = (req, res, next) => {
     }
 
     try {
-        const decoded = verifyAccessToken(token);
+        const decoded = verifyRefreshToken(token);
         req.user = { id: decoded.userId };
         next();
     } catch (error) {
