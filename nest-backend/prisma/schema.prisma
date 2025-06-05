@@ -1,0 +1,103 @@
+ datasource db {
+   provider = "postgresql"
+   url      = env("DATABASE_URL")
+ }
+
+ generator client {
+   provider = "prisma-client-js"
+ }
+
+ model User {
+   user_id      Int      @id @default(autoincrement())
+   firstname    String
+   lastname     String
+   email        String   @unique
+   phone        String?
+   adress       String?
+   birthdate    DateTime
+   sex          Sex
+   role         Role
+   passwordHash String   @map("password_hash")
+   createdAt    DateTime @default(now()) @map("created_at")
+   // Relations
+   ordinances      Ordinance[]
+   drugIntakes     DrugIntake[]
+   authentications Authentification[]
+ }
+
+ enum Sex {
+   Man
+   Woman
+   Other
+ }
+
+ enum Role {
+   Patient
+   Doctor
+   Pharmacist
+ }
+
+ model Drug {
+   drug_id      Int      @id @default(autoincrement())
+   name         String
+   dosage       String?
+   vidal_code   String   @unique
+   description  String?
+   side_effects String?
+   // Relations
+   drugIntakes  DrugIntake[]
+   prescriptions Prescription[]
+ }
+
+ model Ordinance {
+   ordinance_id Int      @id @default(autoincrement())
+   user_id      Int
+   date         DateTime @map("date")
+   doctor       String
+   scan_file    String?
+   qr_code      String?
+   text_analysis String?
+   date_analysis DateTime @default(now())
+   // Relations
+   user         User      @relation(fields: [user_id], references: [user_id])
+   prescriptions Prescription[]
+ }
+
+ model Prescription {
+   prescription_id Int @id @default(autoincrement())
+   ordinance_id    Int
+   drug_id         Int
+   posology        String
+   time_lenght     String
+   // Relations
+   ordinance       Ordinance @relation(fields: [ordinance_id], references: [ordinance_id])
+   drug            Drug      @relation(fields: [drug_id], references: [drug_id])
+ }
+
+ model DrugIntake {
+   intake_id   Int      @id @default(autoincrement())
+   user_id     Int
+   drug_id     Int
+   intake_date DateTime
+   status      IntakeStatus
+   // Relations
+   user        User @relation(fields: [user_id], references: [user_id])
+   drug        Drug @relation(fields: [drug_id], references: [drug_id])
+ }
+
+ enum IntakeStatus {
+   "To take"
+   Taked
+   Forgotten
+ }
+
+ model Authentification {
+   id           Int      @id @default(autoincrement())
+   user_id      Int
+   provider     String
+   access_token String
+   refresh_token String?
+   expires_at   DateTime
+   // Relations
+   user User @relation(fields: [user_id], references: [user_id])
+ }
