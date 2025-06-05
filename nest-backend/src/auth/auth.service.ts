@@ -1,29 +1,40 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, Inject } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserService } from '../user/user.service';
-import * as bcrypt from 'bcrypt';
-import { Prisma } from '@prisma/client';
+import { Auth } from 'firebase-admin/auth';
+
+const API_KEY = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
 
 @Injectable()
 export class AuthService {
-  constructor(private users: UserService, private jwt: JwtService) {}
+  constructor(@Inject('FIREBASE_AUTH') private firebaseAuth: Auth, private jwt: JwtService) {}
 
-  async signup(data: Prisma.UserCreateInput) {
-    return this.users.create(data);
+  async signup(email: string, password: string) {
+    const res = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, returnSecureToken: true }),
+      });
+    const data = await res.json();
+    if (!res.ok) throw new HttpException(data.error?.message || 'Firebase error', res.status);
+    return data;
   }
 
-  async validateUser(email: string, password: string) {
-    const user = await this.users.findByEmail(email);
-    if (!user) return null;
-    const match = await bcrypt.compare(password, user.passwordHash);
-    if (!match) return null;
-    return user;
+  async loginWithEmail(email: string, password: string) {
+    const res = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, returnSecureToken: true }),
+      });
+    const data = await res.json();
+    if (!res.ok) throw new HttpException(data.error?.message || 'Firebase error', res.status);
+    return this.loginWithIdToken(data.idToken);
   }
 
-  async login(email: string, password: string) {
-    const user = await this.validateUser(email, password);
-    if (!user) return null;
-    const token = await this.jwt.signAsync({ sub: user.user_id });
+  async loginWithIdToken(idToken: string) {
+    const decoded = await this.firebaseAuth.verifyIdToken(idToken);
+    const token = await this.jwt.signAsync({ sub: decoded.uid });
     return { token };
   }
 }
