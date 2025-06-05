@@ -4,32 +4,39 @@ import React from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useAuthStore } from '@/store/authStore';
+import Link from 'next/link';
+import { Checkbox } from '@/components/ui/checkbox';
 
 export default function SignupPage() {
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
-    const handleEmailSignup = async () => {
-        console.log('Signin up with:', email, password);
-        router.push('/');
-    };
+    const { signUp, signInWithGoogle, signInWithApple, loading, error } = useAuthStore();
 
-    const handleGoogleSignup = async () => {
-        console.log('Signing up with Google');
-        router.push('/');
-    };
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
 
-    const handleAppleSignup = async () => {
-        console.log('Signing up with Apple');
-        router.push('/');
+        if (password !== confirmPassword) {
+            alert('Les mots de passe ne correspondent pas');
+            return;
+        }
+
+        try {
+            await signUp(email, password);
+            router.push('/profil');
+        } catch (error) {
+            console.error('Erreur lors de l\'inscription:', error);
+        }
     };
 
         return (
             <StyledWrapper>
                 <div className="container">
-                    <div className="heading">Sign In</div>
-                    <form className="form">
+                    <div className="heading">Inscription</div>
+                    <form className="form" onSubmit={handleSubmit}>
                         <input 
                             required 
                             className="input" 
@@ -39,6 +46,7 @@ export default function SignupPage() {
                             placeholder="E-mail" 
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            disabled={loading}
     
                         />
                         <input 
@@ -47,26 +55,38 @@ export default function SignupPage() {
                             type="password" 
                             name="password" 
                             id="password" 
-                            placeholder="Password" 
+                            placeholder="Mot De Passe" 
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            disabled={loading}
+                        />
+                        <input 
+                            required 
+                            className="input" 
+                            type="confirmPassword" 
+                            name="confirmPassword" 
+                            id="confirmPassword" 
+                            placeholder="Confirmation Mot De Passe" 
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            disabled={loading}
                         />
                         <span className="forgot-password">
-                            <a href="#">Forgot Password ?</a>
+                            <a href="#">Mot de passe oublié ?</a>
                         </span>
                         <input 
                             className="login-button" 
                             type="submit" 
-                            defaultValue="Sign In"
-                            onClick={handleEmailSignup}
+                            defaultValue="S'inscrire"
+                            disabled={loading}
                         />
                     </form>
                     <div className="social-account-container">
-                        <span className="title">Or Sign in with</span>
+                        <span className="title">S'inscrire avec</span>
                         <div className="social-accounts">
                             <button 
                                 className="social-button google" 
-                                onClick={handleGoogleSignup} 
+                                onClick={() => signInWithGoogle()}
                             >
                                 <svg 
                                     className="svg" 
@@ -79,7 +99,7 @@ export default function SignupPage() {
                             </button>
                             <button 
                                 className="social-button apple"
-                                onClick={handleAppleSignup} 
+                                onClick={() => signInWithApple()}
                             >
                                 <svg 
                                     className="svg" 
@@ -92,9 +112,17 @@ export default function SignupPage() {
                             </button>
                         </div>
                     </div>
-                    <span className="agreement">
-                        <a href="#">Learn user licence agreement</a>
-                    </span>
+                    <div className="agreement">
+                        <Checkbox className="rounded shadow-md" />{' '}
+                        <span className="text-xs">J'accepte les</span>{' '}
+                            <Link href="/terms" className="text-xs">
+                            <span className="text-xs">termes et conditions</span>
+                            </Link>{' '}
+                            <span className="text-xs">et la</span>{' '}
+                            <Link href="/privacy">
+                            <span className="text-xs">politique de confidentialité</span>
+                            </Link>
+                    </div>
                 </div>
             </StyledWrapper>
         );
